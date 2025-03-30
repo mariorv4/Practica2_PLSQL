@@ -1,6 +1,6 @@
 # Practica2_PLSQL
 
-Trabajo hehco por:
+Trabajo hecho por:
 - Álvaro Ayllón
 - Mario Remacha
 - Samuel De Castro
