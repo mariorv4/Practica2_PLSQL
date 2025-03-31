@@ -74,6 +74,18 @@ create or replace procedure registrar_pedido(
     if arg_id_primer_plato is null and arg_id_segundo_plato is null then
         RAISE_APPLICATION_ERROR(-20002, 'El pedido debe contener al menos un plato.');
     end if;
+    -- Segunda validación. Capacidad del personal(5 pedidos simultáneos)
+    select pedidos_activos
+    into v_pedidosActivosPersonal
+    from personal_servicio
+    where id_personal = arg_id_personal
+    for update;
+
+    if v_pedidosActivosPersonal >= 5 then
+             RAISE_APPLICATION_ERROR(-20003, 'El personal de servicio tiene demasiados pedidos.');
+    end if;
+    -- En caso de que no exista el Id del personal, al final se capturará en el "When others" que pondremos
+    -- posteriormente la excepción ORA que enviará el select.
 end;
 /
 
