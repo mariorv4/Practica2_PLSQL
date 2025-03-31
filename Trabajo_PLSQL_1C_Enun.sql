@@ -70,7 +70,10 @@ create or replace procedure registrar_pedido(
     v_nuevoIdPedido           INTEGER; -- Id para el nuevo pedido
     v_esPlatoDisponible       INTEGER; -- Flag de disponibilidad (0 o 1)
  begin
-  null; -- sustituye esta línea por tu código
+    -- Primera validación. Cada pedido debe incluir al menos un plato.
+    if arg_id_primer_plato is null and arg_id_segundo_plato is null then
+        RAISE_APPLICATION_ERROR(-20002, 'El pedido debe contener al menos un plato.');
+    end if;
 end;
 /
 
