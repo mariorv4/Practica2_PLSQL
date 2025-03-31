@@ -62,6 +62,13 @@ create or replace procedure registrar_pedido(
     arg_id_primer_plato INTEGER DEFAULT NULL,
     arg_id_segundo_plato INTEGER DEFAULT NULL
 ) is 
+-- variables
+    v_pedidosActivosPersonal  INTEGER; -- Contador de pedidos del personal
+    v_precioPlato1            DECIMAL(10, 2) := 0; -- Precio del primer plato
+    v_precioPlato2            DECIMAL(10, 2) := 0; -- Precio del segundo plato
+    v_totalCalculado          DECIMAL(12, 2) := 0; -- Suma total del pedido
+    v_nuevoIdPedido           INTEGER; -- Id para el nuevo pedido
+    v_esPlatoDisponible       INTEGER; -- Flag de disponibilidad (0 o 1)
  begin
   null; -- sustituye esta línea por tu código
 end;
