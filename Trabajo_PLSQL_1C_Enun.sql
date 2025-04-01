@@ -130,6 +130,19 @@ create or replace procedure registrar_pedido(
     select seq_pedidos.nextval into v_nuevoIdPedido from dual; --
     insert into pedidos (id_pedido, id_cliente, id_personal, fecha_pedido, total)
     values (v_nuevoIdPedido, arg_id_cliente, arg_id_personal, SYSDATE, v_totalCalculado);
+    
+     --Añadimos detalles en detalle_pedido
+    
+    if arg_id_primer_plato is not null then
+        insert into detalle_pedido (id_pedido, id_plato, cantidad)
+        values (v_nuevoIdPedido, arg_id_primer_plato, 1);
+    end if;
+    
+
+    if arg_id_segundo_plato is not null and arg_id_segundo_plato != NVL(arg_id_primer_plato, -1) then
+        insert into detalle_pedido (id_pedido, id_plato, cantidad)
+        values (v_nuevoIdPedido, arg_id_segundo_plato, 1);
+    END IF;
 end;
 /
 
