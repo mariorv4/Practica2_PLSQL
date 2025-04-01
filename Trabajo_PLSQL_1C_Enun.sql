@@ -124,6 +124,12 @@ create or replace procedure registrar_pedido(
                 RAISE_APPLICATION_ERROR(-20004, 'El segundo plato seleccionado (' || arg_id_segundo_plato || ') no existe.');
         end;
     end if;
+    
+    --Obtenemos el ID y el Crear Pedido en Pedidos
+
+    select seq_pedidos.nextval into v_nuevoIdPedido from dual; --
+    insert into pedidos (id_pedido, id_cliente, id_personal, fecha_pedido, total)
+    values (v_nuevoIdPedido, arg_id_cliente, arg_id_personal, SYSDATE, v_totalCalculado);
 end;
 /
 
