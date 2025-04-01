@@ -202,10 +202,16 @@ exec inicializa_test;
 create or replace procedure test_registrar_pedido is
 begin
 	 
-  --caso 1 Pedido correct, se realiza
-  begin
-    inicializa_test;
-  end;
+ CREATE OR REPLACE PROCEDURE test_registrar_pedido IS
+BEGIN
+    -- Caso 1: Pedido válido con un plato disponible y personal con capacidad.
+    BEGIN
+        inicializa_test;
+        registrar_pedido(1, 1, 1); -- Cliente Pepe pide Sopa con Personal Carlos.
+        DBMS_OUTPUT.PUT_LINE('Caso 1 exitoso: Pedido realizado correctamente.');
+    EXCEPTION WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Caso 1 fallido: ' || SQLERRM);
+    END;
   
   -- Idem para el resto de casos
 
