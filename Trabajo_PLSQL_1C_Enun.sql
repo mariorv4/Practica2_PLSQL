@@ -143,6 +143,10 @@ create or replace procedure registrar_pedido(
         insert into detalle_pedido (id_pedido, id_plato, cantidad)
         values (v_nuevoIdPedido, arg_id_segundo_plato, 1);
     END IF;
+    --Actualizamos el número de pedidos activos del personal de servicio
+    update personal_servicio
+    set pedidos_activos = pedidos_activos + 1
+    where id_personal = arg_id_personal;
 end;
 /
 
