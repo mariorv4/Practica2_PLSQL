@@ -105,7 +105,25 @@ create or replace procedure registrar_pedido(
                 RAISE_APPLICATION_ERROR(-20004, 'El primer plato seleccionado (' || arg_id_primer_plato || ') no existe.');
         end;
     end if;
-    
+    --Cuarta validación. Validar el segundo plato.
+    if arg_id_segundo_plato is not  null and arg_id_segundo_plato != NVL(arg_id_primer_plato, -1) THEN
+        begin
+            select precio, disponible
+            into v_precioPlato2, v_esPlatoDisponible
+            from platos
+            where id_plato = arg_id_segundo_plato;
+
+            if v_esPlatoDisponible = 0 then -- >> USAR NUEVA VARIABLE <<
+                RAISE_APPLICATION_ERROR(-20001, 'El plato ' ||arg_id_segundo_plato || ' no está disponible.');
+            end if;
+
+            v_totalCalculado := v_totalCalculado + v_precioPlato2;
+        --Excepción si no hay segundo plato (-20004)
+        exception
+            when NO_DATA_FOUND then
+                RAISE_APPLICATION_ERROR(-20004, 'El segundo plato seleccionado (' || arg_id_segundo_plato || ') no existe.');
+        end;
+    end if;
 end;
 /
 
