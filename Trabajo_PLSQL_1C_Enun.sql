@@ -86,6 +86,26 @@ create or replace procedure registrar_pedido(
     end if;
     -- En caso de que no exista el Id del personal, al final se capturará en el "When others" que pondremos
     -- posteriormente la excepción ORA que enviará el select.
+    --Tercera validación. Exitencia y disponibilidad de los platos y calculo parcial del total.
+    v_totalCalculado := 0; 
+    if arg_id_primer_plato is not null then
+        begin
+            select precio, disponible
+            into v_precioPlato1, v_esPlatoDisponible 
+            from platos
+            where id_plato = arg_id_primer_plato;
+            
+            if v_esPlatoDisponible = 0 then 
+                RAISE_APPLICATION_ERROR(-20001, 'El plato ' || arg_id_primer_plato || ' no está disponible.');
+            end if;
+            v_totalCalculado := v_totalCalculado + v_precioPlato1; 
+        --Excepción si no hay primer plato (-20004)   
+        exception
+            when NO_DATA_FOUND then 
+                RAISE_APPLICATION_ERROR(-20004, 'El primer plato seleccionado (' || arg_id_primer_plato || ') no existe.');
+        end;
+    end if;
+    
 end;
 /
 
