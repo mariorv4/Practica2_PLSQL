@@ -153,15 +153,15 @@ end;
 ------ Deja aquí tus respuestas a las preguntas del enunciado:
 -- NO SE CORREGIRÁN RESPUESTAS QUE NO ESTÉN AQUÍ (utiliza el espacio que necesites apra cada una)
 -- * P4.1
---
+--   Se utiliza la cláusula FOR UPDATE en las consultas para bloquear las filas afectadas durante la transacción. Esto evita que otros procesos modifiquen los datos mientras se realiza el procedimiento.
 -- * P4.2
---
+--   El sistema es extensible. Los nuevos platos y personal se pueden agregar sin necesidad de modificar el procedimiento.
 -- * P4.3
 --
 -- * P4.4
 --
 -- * P4.5
--- 
+--   Las claves foráneas garantizan que no se puedan eliminar registros relacionados sin antes eliminar sus dependencias.
 
 
 create or replace
