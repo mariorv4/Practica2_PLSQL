@@ -113,7 +113,7 @@ create or replace procedure registrar_pedido(
             from platos
             where id_plato = arg_id_segundo_plato;
 
-            if v_esPlatoDisponible = 0 then -- >> USAR NUEVA VARIABLE <<
+            if v_esPlatoDisponible = 0 then 
                 RAISE_APPLICATION_ERROR(-20001, 'El plato ' ||arg_id_segundo_plato || ' no está disponible.');
             end if;
 
@@ -162,11 +162,26 @@ end;
 ------ Deja aquí tus respuestas a las preguntas del enunciado:
 -- NO SE CORREGIRÁN RESPUESTAS QUE NO ESTÉN AQUÍ (utiliza el espacio que necesites apra cada una)
 -- * P4.1
---   Se utiliza la cláusula FOR UPDATE en las consultas para bloquear las filas afectadas durante la transacción. Esto evita que otros procesos modifiquen los datos mientras se realiza el procedimiento.
+----Para garantizar que un miembro del personal de servicio no supere el limite 
+--de pedidos activos he usado dos mecanismos:
+
+--El primero es la restricción check en la tabla personal_servicio que asegura 
+--que pedidos_activos no supere 5.
+
+--El segundo es la segunda validación en el procedimiento registrar_pedido: antes de crear un pedido, 
+--se verifica si el personal ya tiene 5 pedidos activos (usando SELECT ... FOR UPDATE
+--para bloquear la fila y evitar condiciones de carrera). Si se cumple, se lanza el error -20003.
+
 -- * P4.2
---   El sistema es extensible. Los nuevos platos y personal se pueden agregar sin necesidad de modificar el procedimiento.
+--   El sistema es extensible. Los nuevos platos y personal se pueden agregar sin necesidad de 
+--modificar el procedimiento.
+
 -- * P4.3
---
+-- Si gracias al bloqueo for update que bloquea la fila del personal hasta que se haga commmit, 
+--evitando que otras conexiones modifiquen pedidos_activos durante el proceso.
+-- Además si falla cualquier paso posterior el roolback deshace todos los cambios manteniendo 
+--la consistencia.
+
 -- * P4.4
 --
 -- * P4.5
