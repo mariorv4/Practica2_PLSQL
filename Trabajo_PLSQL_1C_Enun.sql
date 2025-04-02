@@ -279,6 +279,23 @@ BEGIN
         DBMS_OUTPUT.PUT_LINE('Caso 3 fallido: ' || SQLERRM);
     END;
   
+    -- Caso 4: Pedido que incluye un plato que no está disponible.
+    -- Este caso espera la excepción -20001
+    begin
+        inicializa_test;
+        -- Usamos el plato 3 (Carne), que está marcado como no disponible (0) en inicializa_test
+        registrar_pedido(arg_id_cliente => 1, arg_id_personal => 1, arg_id_primer_plato => 3);
+        -- Si llega aquí, el test falló porque no lanzó la excepción esperada.
+        DBMS_OUTPUT.PUT_LINE('Caso 4 (Plato no disponible): FALLO - No se lanzó la excepción esperada -20001.');
+    exception
+        when others then
+            if sqlcode = -20001 then
+                DBMS_OUTPUT.PUT_LINE('Caso 4 (Plato no disponible): ÉXITO - Se lanzó correctamente la excepción -20001.');
+            else
+                DBMS_OUTPUT.PUT_LINE('Caso 4 (Plato no disponible): FALLO - Se lanzó una excepción inesperada: ' || SQLERRM);
+            end if;
+    end;
+  
   -- Idem para el resto de casos
 
   /* - Si se realiza un pedido vac´ıo (sin platos) devuelve el error -200002.
