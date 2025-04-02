@@ -221,6 +221,15 @@ BEGIN
     EXCEPTION WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Caso 2 fallido: ' || SQLERRM);
     END;
+
+-- Caso 3: Pedido con un plato que no existe.
+    BEGIN
+        inicializa_test;
+        registrar_pedido(1, 1, 99); -- Plato inexistente.
+        DBMS_OUTPUT.PUT_LINE('Caso 3 exitoso.');
+    EXCEPTION WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Caso 3 fallido: ' || SQLERRM);
+    END;
   
   -- Idem para el resto de casos
 
