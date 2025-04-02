@@ -147,6 +147,15 @@ create or replace procedure registrar_pedido(
     update personal_servicio
     set pedidos_activos = pedidos_activos + 1
     where id_personal = arg_id_personal;
+    
+    COMMIT;
+    
+    -- Ponemos el When others para capturar cualquier otra excepción
+    -- Así evitamos estados inconsistentes en la base de datos
+    exception
+    when others then
+        rollback;
+        raise;
 end;
 /
 
@@ -216,9 +225,7 @@ exec inicializa_test;
 
 -- Completa lost test, incluyendo al menos los del enunciado y añadiendo los que consideres necesarios
 
-create or replace procedure test_registrar_pedido is
-begin
-	 
+
  CREATE OR REPLACE PROCEDURE test_registrar_pedido IS
 BEGIN
     -- Caso 1: Pedido válido con un plato disponible y personal con capacidad.
