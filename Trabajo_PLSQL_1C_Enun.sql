@@ -225,9 +225,7 @@ exec inicializa_test;
 
 -- Completa lost test, incluyendo al menos los del enunciado y añadiendo los que consideres necesarios
 
-create or replace procedure test_registrar_pedido is
-begin
-	 
+
  CREATE OR REPLACE PROCEDURE test_registrar_pedido IS
 BEGIN
     -- Caso 1: Pedido válido con un plato disponible y personal con capacidad.
