@@ -295,6 +295,25 @@ BEGIN
                 DBMS_OUTPUT.PUT_LINE('Caso 4 (Plato no disponible): FALLO - Se lanzó una excepción inesperada: ' || SQLERRM);
             end if;
     end;
+    
+    -- Caso 5: Personal de servicio ya tiene 5 pedidos activos.
+    -- Este caso espera a la excepción -20003
+    begin
+        inicializa_test;
+        -- Usamos el personal 2 (Maria), que tiene 5 pedidos activos en inicializa_test
+        registrar_pedido(arg_id_cliente => 1, arg_id_personal => 2, arg_id_primer_plato => 1); -- Plato 1 es válido
+        -- Si llega aquí, el test falló porque no lanzó la excepción esperada.
+        DBMS_OUTPUT.PUT_LINE('Caso 5 (Personal lleno): FALLO - No se lanzó la excepción esperada -20003.');
+    exception
+        when others then
+            if sqlcode = -20003 then
+                DBMS_OUTPUT.PUT_LINE('Caso 5 (Personal lleno): ÉXITO - Se lanzó correctamente la excepción -20003.');
+            else
+                DBMS_OUTPUT.PUT_LINE('Caso 5 (Personal lleno): FALLO - Se lanzó una excepción inesperada: ' || SQLERRM);
+            end if;
+    end;
+
+    DBMS_OUTPUT.PUT_LINE('Fin de bateria de tests');
   
   -- Idem para el resto de casos
 
