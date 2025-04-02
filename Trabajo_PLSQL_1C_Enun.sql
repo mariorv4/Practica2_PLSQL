@@ -183,7 +183,16 @@ end;
 --la consistencia.
 
 -- * P4.4
---
+-- La restricción check añade una capa de seguridad a nivel de base de datos, pero es redundante con 
+-- la lógica select for update y la comprobación if v_pedidosActivosPersonal >= 5 que ya existen en el procedimiento.
+
+-- Gestión de excepciones:
+-- El código actual ya previene el update y lanza el error -20003 si el límite se alcanza.
+-- Si el update intentara violar el límite, la restricción check lanzaría un error genérico ORA-02290,
+-- que sería capturado por el when others, provocando un rollback. El mensaje de error sería menos específico que el -20003.
+
+-- Modificaciones: No son necesarias modificaciones significativas. La estrategia actual (comprobar antes de actualizar con for update)
+-- es preferible porque da un error de aplicación claro (-20003). El check funciona como un elemento de seguridad adicional.
 -- * P4.5
 --   Las claves foráneas garantizan que no se puedan eliminar registros relacionados sin antes eliminar sus dependencias.
 
